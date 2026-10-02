@@ -78,7 +78,7 @@ for n in tqdm(list(ns), desc="n"):
         # CKSD competitors: same data, different ordering of S_n (a fresh random shuffle in every repetition)
         order_random = rng.permutation(M)
         cksd_tests = {
-            "CKSD (jst)": (KQ_sjt, order_sjt),
+            "CKSD (sjt)": (KQ_sjt, order_sjt),
             "CKSD (lex)": (KQ_lex, order_lex),
             "CKSD (random)": (YangSteinKernel1D(k, l, space_lex[order_random]), order_random),
         }
@@ -128,7 +128,7 @@ set_plot_style(fontsize=10)
 alpha = 0.05
 figsize = (6.5 / 4, 1.6)
 palette = "cubehelix"
-hue_order = ["CKSD (jst)", "CKSD (lex)", "CKSD (random)", "MMD"]
+hue_order = ["CKSD (sjt)", "CKSD (lex)", "CKSD (random)", "MMD"]
 legend_width = 1.7
 
 # axis labels
