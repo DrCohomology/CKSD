@@ -1,7 +1,7 @@
 # CKSD experiments: permutations and rotamers
 
 Synthetic experiments for the conditional kernel Stein discrepancy (CKSD) goodness-of-fit test, on two response
-spaces: permutations of 5 items (the symmetric group S_5, Sec. 4.2) and the torus S^1 x S^1 (Sec. 4.1).
+spaces: permutations of 6 items (the symmetric group S_6, Sec. 4.2) and the torus S^1 x S^1 (Sec. 4.1).
 Each experiment estimates the level, power and runtime of the CKSD test and compares them with an MMD two-sample test.
 
 ## Files
