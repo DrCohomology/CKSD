@@ -23,13 +23,11 @@ from permutations import MallowsKernel, YangSteinKernel1D, gray_space, kendall
 from utils import GaussianKernel1D, mmd_test, plot_rejection_rate, plot_runtime, rejection_rates, sample_rows, \
     set_plot_style, wild_bootstrap_pvalue
 
-#%% experiment
-
 rng = np.random.default_rng(43)
 # ns = np.geomspace(100, 1000, 10).astype(int)
 ns = [10, 20, 50, 100, 200, 500]
 ns = np.array([n if n % 2 == 0 else n+1 for n in ns])  # having them even is simpler
-na, nrep, B = 5, 100, 1000
+na, nrep, B = 6, 100, 1000
 nu_h1 = 5
 
 # reference list of S_n: lexicographic (01234, 01243, ..., 43210); rankings are sampled as indices into it.
@@ -45,9 +43,7 @@ d_c2 = kendall(space_lex, center2[None])[:, 0]
 k = GaussianKernel1D(gamma=1.0)
 l = MallowsKernel(na)
 order_sjt = np.array([lex_index[tuple(p)] for p in gray_space(na)])
-order_lex = np.arange(M)
 KQ_sjt = YangSteinKernel1D(k, l, space_lex[order_sjt])
-KQ_lex = YangSteinKernel1D(k, l, space_lex[order_lex])
 L_lex = KQ_lex.L                                     # l on space_lex, used by the MMD test
 
 
@@ -76,11 +72,8 @@ for n in tqdm(list(ns), desc="n"):
         js1 = js[:n // 2]                                 # observed data, half 1; js2 is replaced by js2p
 
         # CKSD competitors: same data, different ordering of S_n (a fresh random shuffle in every repetition)
-        order_random = rng.permutation(M)
         cksd_tests = {
-            "CKSD (sjt)": (KQ_sjt, order_sjt),
-            "CKSD (lex)": (KQ_lex, order_lex),
-            "CKSD (random)": (YangSteinKernel1D(k, l, space_lex[order_random]), order_random),
+            "CKSD": (KQ_sjt, order_sjt),
         }
         boot_seed = rng.integers(2 ** 32)                 # same bootstrap multipliers for all orderings
 
@@ -128,7 +121,7 @@ set_plot_style(fontsize=10)
 alpha = 0.05
 figsize = (6.5 / 4, 1.6)
 palette = "cubehelix"
-hue_order = ["CKSD (sjt)", "CKSD (lex)", "CKSD (random)", "MMD"]
+hue_order = ["CKSD", "MMD"]
 legend_width = 1.7
 
 # axis labels
@@ -141,15 +134,15 @@ rates, times, ylim_power = rejection_rates(df, alpha)
 style = dict(figsize=figsize, palette=palette)
 
 # Q1: level
-plot_rejection_rate(rates, "Q1", figures_dir / "permutations_Q1.pdf", hue_order,
+plot_rejection_rate(rates, "Q1", figures_dir / f"permutations_na={na}_Q1.pdf", hue_order,
                     xlabel=xlabel, ylabel=ylabel_level, alpha=alpha, **style)
 
 # Q2, Q3: power, on a common y-range
-plot_rejection_rate(rates, "Q2", figures_dir / "permutations_Q2.pdf", hue_order,
+plot_rejection_rate(rates, "Q2", figures_dir / f"permutations_na={na}_Q2.pdf", hue_order,
                     xlabel=xlabel, ylabel=ylabel_power, ylim=ylim_power, **style)
-plot_rejection_rate(rates, "Q3", figures_dir / "permutations_Q3.pdf", hue_order,
+plot_rejection_rate(rates, "Q3", figures_dir / f"permutations_na={na}_Q3.pdf", hue_order,
                     xlabel=xlabel, ylabel=ylabel_power, ylim=ylim_power, **style)
 
 # runtime, with the legend of all four figures
-plot_runtime(times, figures_dir / "permutations_runtime.pdf", hue_order,
+plot_runtime(times, figures_dir / f"permutations_na={na}_runtime.pdf", hue_order,
              xlabel=xlabel, ylabel=ylabel_runtime, legend_width=legend_width, legend_loc="center left", **style)
