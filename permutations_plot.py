@@ -4,8 +4,7 @@ Covariates x ~ U(-1, 1); the rankings of na = 5 items follow a Mallows model cen
 spread nu(x): q_x(y) ∝ exp(-nu(x) d_K(y, centre)). P_{Y|x} = Q1 has nu(x) = |x|, Q2 has nu(x) = nu_h1 |x|, and Q3
 equals Q2 on a random `fraction` of the observed x values and Q1 elsewhere: Q1 gives the level, Q2 and Q3 the power.
 
-Competitors: the CKSD with three orderings of S_n (SJT / lexicographic / random shuffle), which fix the cyclic shift
-of the Stein operator, and the MMD test of the observed first half of the sample against the second half with y
+Competitors: the CKSD with SJT ordering nd the MMD test of the observed first half of the sample against the second half with y
 resampled from the model.
 
 Writes figures/permutations_{Q1,Q2,Q3,runtime}.pdf.
