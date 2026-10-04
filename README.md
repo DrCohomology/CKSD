@@ -26,8 +26,7 @@ Sample sizes n = 10, 20, 50, 100, 200, 500, with 100 repetitions each, B = 1000 
 nominal level alpha = 0.05, seed 43.
 
 - CKSD uses all n points and needs only log q (rankings) or its gradient (torus), never the normalizing constant.
-  On rankings it is run with three orderings of S_n, which fix the cyclic shift of the Stein operator:
-  SJT (neighbours at Kendall distance 1), lexicographic, and a random shuffle.
+  On rankings it is run  with the SJT ordering (neighbours at Kendall distance 1).
 - MMD compares the first half of the sample with the second half, whose responses are resampled from the model.
 
 ## Running
