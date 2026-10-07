@@ -3,9 +3,9 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "kcsd"
+name = "cksd"
 version = "0.1.0"
-description = "Kernel Conditional Stein Discrepancy: the Section 3.3 V-statistic estimator"
+description = "Conditional Kernel Stein Discrepancy"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.23"]

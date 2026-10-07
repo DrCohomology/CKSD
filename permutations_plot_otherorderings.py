@@ -4,7 +4,8 @@ Covariates x ~ U(-1, 1); the rankings of na = 5 items follow a Mallows model cen
 spread nu(x): q_x(y) ∝ exp(-nu(x) d_K(y, centre)). P_{Y|x} = Q1 has nu(x) = |x|, Q2 has nu(x) = nu_h1 |x|, and Q3
 equals Q2 on a random `fraction` of the observed x values and Q1 elsewhere: Q1 gives the level, Q2 and Q3 the power.
 
-Competitors: the CKSD with SJT ordering nd the MMD test of the observed first half of the sample against the second half with y
+Competitors: the CKSD with three orderings of S_n (SJT / lexicographic / random shuffle), which fix the cyclic shift
+of the Stein operator, and the MMD test of the observed first half of the sample against the second half with y
 resampled from the model.
 
 Writes figures/permutations_{Q1,Q2,Q3,runtime}.pdf.
@@ -73,8 +74,11 @@ for n in tqdm(list(ns), desc="n"):
         js1 = js[:n // 2]                                 # observed data, half 1; js2 is replaced by js2p
 
         # CKSD competitors: same data, different ordering of S_n (a fresh random shuffle in every repetition)
+        order_random = rng.permutation(M)
         cksd_tests = {
-            "CKSD": (KQ_sjt, order_sjt),
+            "CKSD (sjt)": (KQ_sjt, order_sjt),
+            "CKSD (lex)": (KQ_lex, order_lex),
+            "CKSD (random)": (YangSteinKernel1D(k, l, space_lex[order_random]), order_random),
         }
         boot_seed = rng.integers(2 ** 32)                 # same bootstrap multipliers for all orderings
 
@@ -122,8 +126,8 @@ set_plot_style(fontsize=10)
 alpha = 0.05
 figsize = (6.5 / 4, 1.6)
 palette = "cubehelix"
-hue_order = ["CKSD", "MMD"]
-legend_width = 0.9
+hue_order = ["CKSD (sjt)", "MMD"]
+legend_width = 1.7
 
 # axis labels
 xlabel = "$n$"
